@@ -1,19 +1,21 @@
 # notion-sync-commission
 这是我使用Github的Action功能来同步委托图的仓库. 我的委托图以数据库的形式存储在Notion中(如下图所示), 并且准备了一个能使用WebDAV访问的OneDrive文件夹方便日常查看. 这个仓库中的workflow会每天一次使用Notion API来获取数据库中委托图的信息, 并将本日新增的委托图同步到WebDAV的文件夹中.
 
-
+![image-20241103205837469](fig/image-20241103205837469.png)
 
 ## 如果你想使用
 
-1. `fork`此仓库以创建一个自己的版本. 
+1. `fork`此仓库以创建一个自己可以修改的版本. 
 
-2. 修改`settings.py`来修改过滤条件等设置. 
+   ![image-20241103210105435](fig/image-20241103210105435.png)
+
+2. 修改`settings.py`中的过滤条件和文件夹地址等来对应自己的Notion数据库和文件夹. 
 
 3. 通过Notion Integration获取Notion的API Key.
 
 4. 获取WebDAV的账户和密码. 我习惯使用OneDrive, 但OneDrive不直接提供WebDAV, 因此我将OneDrive连接到了Koofr并通过Koofr提供的WebDAV来访问OneDrive. 
 
-5. 转到`Settings`-`Secrets and variables`-`Actions`, 将前两步获取的信息添加到Action的环境变量. 
+5. 转到`Settings`-`Secrets and variables`-`Actions`, 将前两步获取的信息用以下名称添加到Action的环境变量. 
 
    | Name            | Secret                                                       |
    | --------------- | ------------------------------------------------------------ |
