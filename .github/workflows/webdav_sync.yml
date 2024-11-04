@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      WEBDAV_HOSTNAME: https://app.koofr.net/dav/OneDrive for Business
+      WEBDAV_HOSTNAME: ${{ secrets.WEBDAV_HOSTNAME }}
       WEBDAV_LOGIN: ${{ secrets.WEBDAV_LOGIN }}
       WEBDAV_PASSWORD: ${{ secrets.WEBDAV_PASSWORD }}
       DATABASE_ID: ${{ secrets.DATABASE_ID }}
