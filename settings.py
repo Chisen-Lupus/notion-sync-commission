@@ -15,6 +15,10 @@ block_filters = {
 
 date_property = '更新日期'
 
+# 页面标题对应的tag名称. 默认就是Name, 所以如果没有在Notion中更改的话这里也不需要改. 
+
+name_property = 'Name'
+
 # 需要同步的文件夹在WebDAV文件夹中的位置
 
 webdav_outdir = "/SWAP/cmsn/"

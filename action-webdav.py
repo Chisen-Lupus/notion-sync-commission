@@ -7,7 +7,7 @@ from importlib import reload
 sys.path.append('notion-query')
 import notion
 
-from settings import page_filters, block_filters, date_property, webdav_outdir
+from settings import page_filters, block_filters, date_property, webdav_outdir, name_property
 
 # Initialize Notion Query
 q = notion.Query()
@@ -59,7 +59,7 @@ file_urls = []
 file_names = []
 file_times = []
 for page_header in pages:
-    page_title = notion.get_page_title(page_header)
+    page_title = notion.get_page_title(page_header, name_property=name_property)
     page_id = notion.get_page_id(page_header)
     page_date = page_header['properties'][date_property]['date']['start'].replace('-', '_')
     blocks = q.get_blocks(page_id=page_id, filters=block_filters)
