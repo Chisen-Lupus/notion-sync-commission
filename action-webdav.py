@@ -41,7 +41,7 @@ class CustomWebDAVClient(Client):
         with open(local_path, 'wb') as local_file:
             response = self.execute_request('download', urn.quote())
             for block in response.iter_content(chunk_size=self.chunk_size):
-                local_file.write(block)\
+                local_file.write(block)
 
 # Initialize and use CustomWebDAVClient instead of Client
 client = CustomWebDAVClient(options)
@@ -97,7 +97,7 @@ def append_log_to_webdav():
         existing_log = ''  # Start with an empty log if download fails
 
     # Step 2: Read new log entries and combine with the existing log
-    log.info(f'Uploading appened log to {remote_path}...')
+    log.info(f'Uploading appened log to {remote_log_path}...')
     new_log_entries = log_stream.getvalue()
     combined_log = existing_log + new_log_entries
 
