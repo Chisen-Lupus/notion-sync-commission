@@ -93,7 +93,7 @@ def append_log_to_webdav():
         with open(local_log_path, 'r') as f:
             existing_log = f.read()
     if not success: 
-        log.info(f'Log file not found on WebDAV; creating a new log file.')
+        log.info(f'Failed to download existing log from WebDAV; creating a new log file.')
         existing_log = ''  # Start with an empty log if download fails
 
     # Step 2: Read new log entries and combine with the existing log
