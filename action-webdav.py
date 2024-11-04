@@ -7,6 +7,8 @@ from importlib import reload
 sys.path.append('notion-query')
 import notion
 
+from settings import page_filters, block_filters, date_property, webdav_outdir
+
 # Initialize Notion Query
 q = notion.Query()
 q.set_token(os.getenv('NOTION_TOKEN'))  # Use environment variable for Notion token
@@ -50,13 +52,6 @@ def download_file_from_webdav(remote_path, local_path):
         print(f"Failed to download {remote_path} to {local_path}: {e}")
 
 # Step 3: Fetch Notion image information
-page_filters = {
-    '状态': '完成',
-    '类型': '电绘',
-}
-block_filters = {
-    'type': 'image'
-}
 
 pages = q.get_pages(database_id=database_id, filters=page_filters)
 
@@ -66,7 +61,7 @@ file_times = []
 for page_header in pages:
     page_title = notion.get_page_title(page_header)
     page_id = notion.get_page_id(page_header)
-    page_date = page_header['properties']['更新日期']['date']['start'].replace('-', '_')
+    page_date = page_header['properties'][date_property]['date']['start'].replace('-', '_')
     blocks = q.get_blocks(page_id=page_id, filters=block_filters)
     n_image = len(blocks)
 
@@ -81,7 +76,6 @@ for page_header in pages:
     file_times += pagefile_times
 
 # Step 4: Sync images with WebDAV
-webdav_outdir = "/SWAP/cmsn/"
 remote_files_info = list_webdav_directory(webdav_outdir)
 remote_file_names = [file_info['name'] for file_info in remote_files_info]
 remote_file_times = [parser.parse(file_info['modified']) for file_info in remote_files_info]
@@ -110,3 +104,5 @@ for remote_file_name in remote_file_names:
             print(f"Deleted {remote_path}")
         except Exception as e:
             print(f"Failed to delete {remote_path}: {e}")
+
+# TODO: create log and change output to files count

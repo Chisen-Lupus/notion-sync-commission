@@ -1,5 +1,7 @@
 # notion-sync-commission
-这是我使用Github的Action功能来同步委托图的仓库. 我的委托图以数据库的形式存储在Notion中, 并且准备了一个能使用WebDAV访问的OneDrive文件夹方便日常查看. 这个仓库中的workflow会每天一次使用Notion API来获取数据库中委托图的信息, 并将本日新增的委托图同步到WebDAV的文件夹中.
+这是我使用Github的Action功能来同步委托图的仓库. 我的委托图以数据库的形式存储在Notion中(如下图所示), 并且准备了一个能使用WebDAV访问的OneDrive文件夹方便日常查看. 这个仓库中的workflow会每天一次使用Notion API来获取数据库中委托图的信息, 并将本日新增的委托图同步到WebDAV的文件夹中.
+
+
 
 ## 如果你想使用
 
@@ -23,9 +25,7 @@
 
    ![image-20241103201313807](fig/image-20241103201313807.png)
 
-6. 转到Actions. 在这里你可以启动Action. 启动之后手动`run workflow`试一下会不会报错. 如果没问题的话, 这个workflow就会在每天的UT 0点自动访问你的Notion数据库并把新出现的图同步到WebDAV文件夹里.
-
-   ![image-20241103203517153](fig/image-20241103203517153.png)
+6. 转到Actions. 在这里你可以启动Action. 启动之后手动`run workflow`试一下会不会报错. 如果没问题的话, 这个workflow就会在每天的UT 0点自动访问你的Notion数据库并把新出现的图同步到WebDAV文件夹里, 并清除文件夹中多出来的文件. 这个程序会在运行结果中输出文件的变化情况并将细节更新到WebDAV文件夹中的`workflow.log`文件中. ![image-20241103203517153](fig/image-20241103203517153.png)
 
 ## 如果有问题
 
