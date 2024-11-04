@@ -1,0 +1,3 @@
+[submodule "notion-query"]
+	path = notion-query
+	url = git@github.com:Chisen-Lupus/notion-query.git
