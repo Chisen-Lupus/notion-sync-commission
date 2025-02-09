@@ -21,7 +21,7 @@ name_property = 'Name'
 
 # 需要同步的文件夹在WebDAV文件夹中的位置
 
-webdav_outdir = '/SWAP/cmsn/'
+webdav_outdir = '/SWAP/Commissions/'
 
 # 日志的位置
 

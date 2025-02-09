@@ -16,7 +16,7 @@ from settings import page_filters, block_filters, date_property, webdav_outdir, 
 log_stream = io.StringIO()
 logging.basicConfig(stream=log_stream, level=logging.INFO, format='%(asctime)s - %(message)s')
 log = logging.getLogger()
-log.info('*************** NEW JOB BEGINS ***************')
+log.info('*************** JOB BEGINS ***************')
 
 # Initialize Notion Query
 q = notion.Query()
@@ -53,7 +53,7 @@ def list_webdav_directory(remote_path):
     try:
         return client.list(remote_path, get_info=True)
     except Exception as e:
-        log.info(f'Failed to list directory: {e}')
+        log.error(f'ERROR failed to list directory: {e}')
         return []
 
 def upload_file_to_webdav(local_path, remote_path):
@@ -62,25 +62,25 @@ def upload_file_to_webdav(local_path, remote_path):
         log.info(f'Uploaded {local_path} to {remote_path}')
         return True
     except Exception as e:
-        log.info(f'Failed to upload {local_path} to {remote_path}: {e}')
+        log.error(f'ERROR failed to upload {local_path} to {remote_path}: {e}')
         return False
 
 def download_file_from_webdav(remote_path, local_path):
     try:
         client.download_file(remote_path=remote_path, local_path=local_path)
-        log.info(f'Downloaded {remote_path} to {local_path}')
+        log.info(f'DOWNLOADED {remote_path} to {local_path}')
         return True
     except Exception as e:
-        log.info(f'Failed to download {remote_path} to {local_path}: {e}')
+        log.error(f'ERROR failed to download {remote_path} to {local_path}: {e}')
         return False
 
 def delete_file_from_webdav(remote_path):
     try:
         client.clean(remote_path)
-        log.info(f'Deleted {remote_path}')
+        log.info(f'REMOVED {remote_path}')
         return True
     except Exception as e:
-        log.info(f'Failed to delete {remote_path}: {e}')
+        log.error(f'ERROR failed to delete {remote_path}: {e}')
         return False
 
 def append_log_to_webdav():
@@ -93,7 +93,7 @@ def append_log_to_webdav():
         with open(local_log_path, 'r') as f:
             existing_log = f.read()
     if not success: 
-        log.info(f'Failed to download existing log from WebDAV; creating a new log file.')
+        log.error(f'ERROR failed to download existing log from WebDAV; creating a new log file.')
         existing_log = ''  # Start with an empty log if download fails
 
     # Step 2: Read new log entries and combine with the existing log
@@ -124,6 +124,10 @@ for page_header in pages:
     page_date = page_header['properties'][date_property]['date']['start'].replace('-', '_')
     blocks = q.get_blocks(page_id=page_id, filters=block_filters)
     n_image = len(blocks)
+    if '胶' in page_title:
+        print('catched', page_title)
+        print(blocks)
+        print(n_image)
 
     pagefile_urls = notion.get_image_urls(blocks)
     pagefile_extensions = notion.get_url_extensions(pagefile_urls)
@@ -160,7 +164,7 @@ for file_name, file_url, file_time in zip(file_names, file_urls, file_times):
         if success: count_uploaded += 1
         os.remove(local_path)  # Clean up temporary file after upload
     else: 
-        log.info(f'{remote_path} already exists, skipped')
+        log.info(f'SKIPPED {remote_path} because it already exists')
         count_skipped += 1
 
 # (b) Delete files in WebDAV that are not in Notion
@@ -173,6 +177,7 @@ for remote_file_name in remote_file_names:
 
 # finalize job
 log.info(f'Summary: Skipped {count_skipped} files; uploaded {count_uploaded} files; deleted {count_deleted} files.')
+log.info('**************** JOB ENDS ****************')
+log.info('')
 append_log_to_webdav()
 print(f'Summary: Skipped {count_skipped} files; uploaded {count_uploaded} files; deleted {count_deleted} files. Log appended to {webdav_logname}.')
-
