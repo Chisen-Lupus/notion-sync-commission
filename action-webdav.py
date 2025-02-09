@@ -71,7 +71,7 @@ def download_file_from_webdav(remote_path, local_path):
         log.info(f'DOWNLOADED {remote_path} to {local_path}')
         return True
     except Exception as e:
-        log.error(f'ERROR failed to download {remote_path} to {local_path}: {e}')
+        log.error(f'ERROR failed to download {remote_path} to {local_path} from WebDAV: {e}')
         return False
 
 def delete_file_from_webdav(remote_path):
@@ -161,7 +161,12 @@ for file_name, file_url, file_time in zip(file_names, file_urls, file_times):
         if file_name in remote_file_names:
             client.clean(remote_path)  # Remove outdated file on WebDAV
         local_path = os.path.join('/tmp', file_name)  # Temporary local storage
-        notion.download_files([file_name], [file_url], '/tmp', verbose=False)
+        outpath = notion.download_file(file_name, file_url, '/tmp', verbose=False)
+        # respond to error
+        if outpath is None: 
+            log.warning(f"WARNING failed to download {file_name} from Notion")
+            count_skipped += 1
+            continue
         success = upload_file_to_webdav(local_path, remote_path)
         if success: count_uploaded += 1
         os.remove(local_path)  # Clean up temporary file after upload
