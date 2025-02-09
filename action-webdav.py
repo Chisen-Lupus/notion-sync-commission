@@ -182,4 +182,4 @@ log.info(f'Summary: Skipped {count_skipped} files; added {count_uploaded} files;
 log.info('**************** JOB ENDS ****************')
 log.info('')
 append_log_to_webdav()
-print(f'Summary: Skipped {count_skipped} files; uploaded {count_uploaded} files; deleted {count_deleted} files. Log appended to {webdav_logname}.')
+print(f'Summary: Skipped {count_skipped} files; added {count_uploaded} files; removed {count_deleted} files. Log appended to {webdav_logname}.')
