@@ -121,11 +121,6 @@ file_times = []
 
 for page_header in pages:
     page_title = notion.get_page_title(page_header, name_property=name_property)
-    print('title:', page_title)
-print(len(pages))
-
-for page_header in pages:
-    page_title = notion.get_page_title(page_header, name_property=name_property)
     page_id = notion.get_page_id(page_header)
     page_date = page_header['properties'][date_property]['date']['start'].replace('-', '_')
     blocks = q.get_blocks(page_id=page_id, filters=block_filters)
