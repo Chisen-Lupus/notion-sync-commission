@@ -125,6 +125,8 @@ for page_header in pages:
     page_date = page_header['properties'][date_property]['date']['start'].replace('-', '_')
     blocks = q.get_blocks(page_id=page_id, filters=block_filters)
     n_image = len(blocks)
+    if not blocks or n_image==0: 
+        raise ValueError(f'{page_title} has 0 images!')
 
     pagefile_urls = notion.get_image_urls(blocks)
     pagefile_extensions = notion.get_url_extensions(pagefile_urls)
