@@ -129,7 +129,6 @@ for page_header in pages:
         n_image = len(blocks)
     except Exception as e:
         raise RuntimeError(f'ERROR failed to process page {page_title}: {e}')
-        continue
     if not blocks or n_image==0: 
         raise ValueError(f'{page_title} has 0 images!')
 
