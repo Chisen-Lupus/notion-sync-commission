@@ -1,3 +1,5 @@
+# settings.py
+
 # 数据库的过滤条件. 更改这个变量以适应不同的数据库. 
 
 page_filters = {

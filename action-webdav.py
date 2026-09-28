@@ -1,6 +1,7 @@
 import os
 import sys
 from dateutil import parser
+from librosa import ex
 from webdav3.client import Client
 from webdav3.urn import Urn
 from importlib import reload
@@ -120,11 +121,15 @@ file_names = []
 file_times = []
 
 for page_header in pages:
-    page_title = notion.get_page_title(page_header, name_property=name_property)
-    page_id = notion.get_page_id(page_header)
-    page_date = page_header['properties'][date_property]['date']['start'].replace('-', '_')
-    blocks = q.get_blocks(page_id=page_id, filters=block_filters)
-    n_image = len(blocks)
+    try:
+        page_title = notion.get_page_title(page_header, name_property=name_property)
+        page_id = notion.get_page_id(page_header)
+        page_date = page_header['properties'][date_property]['date']['start'].replace('-', '_')
+        blocks = q.get_blocks(page_id=page_id, filters=block_filters)
+        n_image = len(blocks)
+    except Exception as e:
+        log.error(f'ERROR failed to process page {page_title}: {e}')
+        continue
     if not blocks or n_image==0: 
         raise ValueError(f'{page_title} has 0 images!')
 
