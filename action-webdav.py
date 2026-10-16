@@ -10,6 +10,7 @@ import io
 
 sys.path.append('notion-query')
 import notion
+from notion_client import Query
 
 from settings import page_filters, block_filters, date_property, webdav_outdir, name_property, webdav_logname
 
@@ -20,7 +21,7 @@ log = logging.getLogger()
 log.info('*************** JOB BEGINS ***************')
 
 # Initialize Notion Query
-q = notion.Query()
+q = Query()
 q.set_token(os.getenv('NOTION_TOKEN'))  # Use environment variable for Notion token
 
 database_id = os.getenv('DATABASE_ID')  # Set database ID as an environment variable
@@ -121,6 +122,7 @@ file_names = []
 file_times = []
 
 for page_header in pages:
+    page_title = page_header.get('id', '<unknown>')
     try:
         page_title = notion.get_page_title(page_header, name_property=name_property)
         page_id = notion.get_page_id(page_header)
@@ -128,7 +130,7 @@ for page_header in pages:
         blocks = q.get_blocks(page_id=page_id, filters=block_filters)
         n_image = len(blocks)
     except Exception as e:
-        raise RuntimeError(f'ERROR failed to process page {page_title}: {e}')
+        raise RuntimeError(f'ERROR failed to process page {page_title}: {e}') from e
     if not blocks or n_image==0: 
         raise ValueError(f'{page_title} has 0 images!')
 
